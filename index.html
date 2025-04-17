@@ -1,26 +1,58 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>green-find-guide</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCart - Sustainable Shopping Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <header class="text-center mb-5">
+            <h1 class="text-success mb-2">EcoCart</h1>
+            <p class="text-muted">Find eco-friendly products and sustainable alternatives</p>
+            
+            <div class="search-container mx-auto my-4" style="max-width: 600px;">
+                <form id="searchForm" class="d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search for eco-friendly products...">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </form>
+            </div>
 
-    <meta property="og:title" content="green-find-guide" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+            <div class="filter-tabs mb-4">
+                <button class="btn btn-outline-success active" data-filter="all">All</button>
+                <button class="btn btn-outline-success" data-filter="recyclable">Recyclable</button>
+                <button class="btn btn-outline-success" data-filter="biodegradable">Biodegradable</button>
+                <button class="btn btn-outline-success" data-filter="plastic-free">Plastic-Free</button>
+                <button class="btn btn-outline-success" data-filter="sustainable">Sustainable</button>
+            </div>
+        </header>
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+        <main>
+            <div id="loading" class="text-center d-none">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
 
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+            <div id="productGrid" class="row g-4">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+
+            <div id="productDetail" class="product-detail-modal">
+                <!-- Product detail modal content will be inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
 </html>

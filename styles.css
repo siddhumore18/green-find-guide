@@ -1,0 +1,97 @@
+
+:root {
+    --eco-green: #34A853;
+    --eco-green-light: #E6F4EA;
+    --eco-blue: #4285F4;
+    --eco-blue-light: #E8F0FE;
+    --eco-earth: #C5B47F;
+    --eco-earth-light: #F9F3E5;
+}
+
+.badge-eco {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.badge-recyclable {
+    background-color: var(--eco-blue-light);
+    color: var(--eco-blue);
+}
+
+.badge-biodegradable {
+    background-color: var(--eco-green-light);
+    color: var(--eco-green);
+}
+
+.badge-sustainable {
+    background-color: var(--eco-earth-light);
+    color: var(--eco-earth);
+}
+
+.eco-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--eco-green-light);
+    color: var(--eco-green);
+    font-weight: 600;
+}
+
+.product-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-tabs .btn {
+    min-width: 120px;
+}
+
+.product-detail-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.product-detail-modal.active {
+    display: block;
+}
+
+.product-detail-content {
+    background-color: white;
+    margin: 2rem auto;
+    padding: 2rem;
+    max-width: 800px;
+    border-radius: 1rem;
+    position: relative;
+}
+
