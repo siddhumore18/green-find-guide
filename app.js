@@ -287,14 +287,8 @@ class EcoCart {
         this.showLoading(true);
         
         try {
-            const [serpResults, rapidResults] = await Promise.all([
-                ProductAPI.searchSerpApi(query),
-                ProductAPI.searchRapidApi(query)
-            ]);
-
-            // Combine and deduplicate results
-            const newProducts = [...new Map([...serpResults, ...rapidResults]
-                .map(item => [item.id, item])).values()];
+            // Use the combined search endpoint
+            const newProducts = await ProductAPI.searchCombined(query);
 
             // Add new products to the existing list
             this.products = [...this.products, ...newProducts];
@@ -364,44 +358,72 @@ class EcoCart {
     }
 
     showProductDetail(product) {
-        const modal = document.getElementById('productDetail');
-        modal.innerHTML = `
-            <div class="product-detail-content">
-                <button class="btn-close position-absolute top-0 end-0 m-3" onclick="app.closeProductDetail()"></button>
-                <div class="row">
-                    <div class="col-md-6">
-                        <img src="${product.image}" class="img-fluid rounded" alt="${product.name}">
-                    </div>
-                    <div class="col-md-6">
-                        <h2 class="mb-3">${product.name}</h2>
-                        <p class="text-success h4 mb-4">${product.price}</p>
-                        <div class="mb-4">
-                            <h5>Eco Score: ${product.rating}/10</h5>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" 
-                                     style="width: ${product.rating * 10}%" 
-                                     aria-valuenow="${product.rating}" 
-                                     aria-valuemin="0" 
-                                     aria-valuemax="10"></div>
-                            </div>
+        ProductAPI.getAlternatives(product.id).then(alternatives => {
+            const alternativesHtml = alternatives.length > 0 
+                ? `
+                    <div class="mt-5">
+                        <h3>Eco-friendly Alternatives</h3>
+                        <div class="row">
+                            ${alternatives.map(alt => `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100" style="cursor: pointer;" onclick="app.showProductDetail(app.products.find(p => p.id === '${alt.id}'))">
+                                        <img src="${alt.image}" class="card-img-top" alt="${alt.name}" style="height: 140px; object-fit: cover;">
+                                        <div class="card-body">
+                                            <h5 class="card-title small">${alt.name}</h5>
+                                            <p class="text-success fw-bold mb-1">${alt.price}</p>
+                                            <div class="eco-score mb-2">
+                                                <i class="fas fa-leaf"></i>
+                                                ${alt.rating}/10
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
-                        <div class="mb-4">
-                            <h5>Sustainability Features:</h5>
-                            <div class="badges">
-                                ${product.badges.map(badge => `
-                                    <span class="badge-eco badge-${badge}">
-                                        <i class="fas fa-${this.getBadgeIcon(badge)}"></i>
-                                        ${this.formatBadgeLabel(badge)}
-                                    </span>
-                                `).join(' ')}
-                            </div>
-                        </div>
-                        <p class="mb-4">${product.description}</p>
                     </div>
+                `
+                : '';
+
+            const modal = document.getElementById('productDetail');
+            modal.innerHTML = `
+                <div class="product-detail-content">
+                    <button class="btn-close position-absolute top-0 end-0 m-3" onclick="app.closeProductDetail()"></button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="${product.image}" class="img-fluid rounded" alt="${product.name}">
+                        </div>
+                        <div class="col-md-6">
+                            <h2 class="mb-3">${product.name}</h2>
+                            <p class="text-success h4 mb-4">${product.price}</p>
+                            <div class="mb-4">
+                                <h5>Eco Score: ${product.rating}/10</h5>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: ${product.rating * 10}%" 
+                                         aria-valuenow="${product.rating}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="10"></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h5>Sustainability Features:</h5>
+                                <div class="badges">
+                                    ${product.badges.map(badge => `
+                                        <span class="badge-eco badge-${badge}">
+                                            <i class="fas fa-${this.getBadgeIcon(badge)}"></i>
+                                            ${this.formatBadgeLabel(badge)}
+                                        </span>
+                                    `).join(' ')}
+                                </div>
+                            </div>
+                            <p class="mb-4">${product.description}</p>
+                        </div>
+                    </div>
+                    ${alternativesHtml}
                 </div>
-            </div>
-        `;
-        modal.classList.add('active');
+            `;
+            modal.classList.add('active');
+        });
     }
 
     closeProductDetail() {

@@ -1,6 +1,53 @@
-
 class ProductAPI {
     static async searchSerpApi(query) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/search/serpapi?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('SerpAPI Error:', error);
+            return this.searchSerpApiFallback(query);
+        }
+    }
+
+    static async searchRapidApi(query) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/search/rapidapi?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('RapidAPI Error:', error);
+            return this.searchRapidApiFallback(query);
+        }
+    }
+
+    static async searchCombined(query) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/search?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Combined API Error:', error);
+            const [serpResults, rapidResults] = await Promise.all([
+                this.searchSerpApi(query),
+                this.searchRapidApi(query)
+            ]);
+            return [...serpResults, ...rapidResults];
+        }
+    }
+
+    static async getAlternatives(productId) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/alternatives/${productId}`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Get alternatives error:', error);
+            return [];
+        }
+    }
+
+    static async searchSerpApiFallback(query) {
         const params = new URLSearchParams({
             api_key: CONFIG.serpapi.key,
             engine: 'google_shopping',
@@ -13,12 +60,12 @@ class ProductAPI {
             const data = await response.json();
             return this.formatSerpApiResults(data.shopping_results);
         } catch (error) {
-            console.error('SerpAPI Error:', error);
+            console.error('SerpAPI Fallback Error:', error);
             return [];
         }
     }
 
-    static async searchRapidApi(query) {
+    static async searchRapidApiFallback(query) {
         const options = {
             method: 'GET',
             headers: {
@@ -32,7 +79,7 @@ class ProductAPI {
             const data = await response.json();
             return this.formatRapidApiResults(data.products);
         } catch (error) {
-            console.error('RapidAPI Error:', error);
+            console.error('RapidAPI Fallback Error:', error);
             return [];
         }
     }
@@ -64,7 +111,6 @@ class ProductAPI {
     }
 
     static calculateEcoScore(product) {
-        // Simple eco-score calculation based on keywords
         const keywords = [
             'eco', 'sustainable', 'organic', 'recycled', 'biodegradable',
             'natural', 'renewable', 'green', 'environmentally friendly'
@@ -95,4 +141,3 @@ class ProductAPI {
         return badges;
     }
 }
-
