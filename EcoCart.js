@@ -8,8 +8,54 @@ class EcoCart {
         this.productRenderer = new ProductRenderer();
         this.ecoService = new EcoService();
         
+        // Create the initial HTML structure
+        this.createInitialHtml();
+        
+        // Now that the HTML elements exist, we can add event listeners
         this.setupEventListeners();
         this.loadInitialProducts();
+    }
+
+    createInitialHtml() {
+        // Get the root element
+        const root = document.getElementById('root');
+        
+        // Create the main HTML structure
+        root.innerHTML = `
+            <div class="container my-4">
+                <header class="mb-5 text-center">
+                    <h1 class="mb-3">EcoCart</h1>
+                    <p class="lead">Your Sustainable Shopping Assistant</p>
+                </header>
+                
+                <div class="row mb-4">
+                    <div class="col-md-8 mx-auto">
+                        <form id="searchForm" class="d-flex">
+                            <input type="text" id="searchInput" class="form-control me-2" placeholder="Search for products...">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="filter-tabs d-flex justify-content-center mb-4">
+                    <button class="btn btn-outline-primary me-2 active" data-filter="all">All Products</button>
+                    <button class="btn btn-outline-primary me-2" data-filter="recyclable">Recyclable</button>
+                    <button class="btn btn-outline-primary me-2" data-filter="biodegradable">Biodegradable</button>
+                    <button class="btn btn-outline-primary me-2" data-filter="sustainable">Sustainable</button>
+                    <button class="btn btn-outline-primary" data-filter="plastic-free">Plastic-Free</button>
+                </div>
+                
+                <div id="loading" class="text-center my-4 d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                
+                <div class="row" id="productGrid"></div>
+                
+                <div id="productDetail" class="product-detail"></div>
+            </div>
+        `;
     }
 
     setupEventListeners() {

@@ -1,144 +1,107 @@
-:root {
-    --eco-green: #34A853;
-    --eco-green-light: #E6F4EA;
-    --eco-blue: #4285F4;
-    --eco-blue-light: #E8F0FE;
-    --eco-earth: #C5B47F;
-    --eco-earth-light: #F9F3E5;
-}
 
-.badge-eco {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.badge-recyclable {
-    background-color: var(--eco-blue-light);
-    color: var(--eco-blue);
-}
-
-.badge-biodegradable {
-    background-color: var(--eco-green-light);
-    color: var(--eco-green);
-}
-
-.badge-sustainable {
-    background-color: var(--eco-earth-light);
-    color: var(--eco-earth);
-}
-
-.eco-score {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    background-color: var(--eco-green-light);
-    color: var(--eco-green);
-    font-weight: 600;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .product-card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
     height: 200px;
     object-fit: cover;
-    border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.filter-tabs {
+.eco-score {
+    background-color: #e8f5e9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #388e3c;
+    font-weight: bold;
+}
+
+.badges {
     display: flex;
-    gap: 0.5rem;
-    justify-content: center;
     flex-wrap: wrap;
+    gap: 5px;
 }
 
-.filter-tabs .btn {
-    min-width: 120px;
+.badge-eco {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: white;
 }
 
-.product-detail-modal {
-    display: none;
+.badge-recyclable {
+    background-color: #4caf50;
+}
+
+.badge-biodegradable {
+    background-color: #8bc34a;
+}
+
+.badge-sustainable {
+    background-color: #009688;
+}
+
+.badge-plastic-free {
+    background-color: #3f51b5;
+}
+
+.product-detail {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
-    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
 }
 
-.product-detail-modal.active {
-    display: block;
+.product-detail.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 .product-detail-content {
     background-color: white;
-    margin: 2rem auto;
-    padding: 2rem;
-    max-width: 800px;
-    border-radius: 1rem;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    border-radius: 8px;
+    padding: 30px;
+    overflow-y: auto;
     position: relative;
 }
 
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 2rem 0;
-    margin: 0 auto;
-    max-width: 1400px;
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-.product-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    background: white;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.product-image {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 12px 12px 0 0;
-}
-
-.product-info {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.eco-score {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
+@media (max-width: 768px) {
+    .filter-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .filter-tabs button {
+        margin-bottom: 10px;
+    }
 }
